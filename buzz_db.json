@@ -1,0 +1,712 @@
+{
+  "updated_at": "2026-06-04T21:00:00+09:00",
+  "meta": {
+    "version": "1.0",
+    "description": "Instagramバズリール分析DB。GPT Actionsから直接参照可能。新しい分析ほど重み大、再生数が高いほどscore高。"
+  },
+  "winning_themes": [
+    { "theme": "朝ルーティン", "score": 9.2, "frequency": 14, "note": "起床〜出発まで5分以内の構成が最も伸びる" },
+    { "theme": "ビフォーアフター", "score": 9.0, "frequency": 12, "note": "部屋・体・スキルの変化。変化量が大きいほどシェアされやすい" },
+    { "theme": "失敗→学び", "score": 8.7, "frequency": 10, "note": "共感を呼ぶ失敗談＋明確な教訓がセットで機能する" },
+    { "theme": "コスパ最強〇〇", "score": 8.5, "frequency": 9, "note": "節約・時短・コスパの三拍子が揃うと保存率急上昇" },
+    { "theme": "知らないと損な〇〇", "score": 8.3, "frequency": 11, "note": "情報の希少感を演出するフレームが効果的" }
+  ],
+  "winning_hooks": [
+    { "hook": "「え、これ知らなかったの？」", "score": 9.5, "type": "curiosity", "note": "冒頭0〜2秒で視聴者を揺さぶる" },
+    { "hook": "「〇〇してる人、絶対見て」", "score": 9.3, "type": "targeting", "note": "ターゲットを明示することで該当者の離脱を防ぐ" },
+    { "hook": "「正直に言う。〇〇は間違いだった」", "score": 9.1, "type": "confession", "note": "告白系フックは信頼感と意外性を同時に与える" },
+    { "hook": "「〇〇秒で人生変わった話」", "score": 8.9, "type": "time_urgency", "note": "短時間+大きな変化の組み合わせが再生維持率を上げる" },
+    { "hook": "「これ見て損した人いない」", "score": 8.7, "type": "value_guarantee", "note": "視聴コストゼロを保証するフレーム" }
+  ],
+  "winning_endings": [
+    { "ending": "「保存して後で見返して」", "score": 9.4, "type": "save_cta", "note": "明示的なCTAは保存率を1.5〜2倍にする" },
+    { "ending": "「part2見たい人はコメントで教えて」", "score": 9.1, "type": "comment_cta", "note": "コメント数増加がアルゴリズムに有利" },
+    { "ending": "「友達にも教えてあげて」", "score": 8.8, "type": "share_cta", "note": "シェア促進で新規リーチ拡大" },
+    { "ending": "「〇〇について知りたい人はフォロー」", "score": 8.5, "type": "follow_cta", "note": "テーマとの関連性を明示することでフォロー転換率が上がる" }
+  ],
+  "winning_locations": [
+    { "location": "カフェ（白背景）", "score": 9.0, "visual_note": "明るい自然光、おしゃれ感、共感しやすい日常感" },
+    { "location": "自室デスク（整理整頓済み）", "score": 8.8, "visual_note": "親近感＋実用的な情報発信に最適" },
+    { "location": "屋外・公園", "score": 8.5, "visual_note": "開放感。健康・ライフスタイル系との相性が良い" },
+    { "location": "キッチン", "score": 8.3, "visual_note": "料理・健康・節約コンテンツで高パフォーマンス" }
+  ],
+  "winning_outfits": [
+    { "outfit": "シンプル白Tシャツ＋デニム", "score": 9.1, "note": "清潔感と親しみやすさを両立。ブランド不問" },
+    { "outfit": "モノトーン系コーデ", "score": 8.9, "note": "背景に溶け込まず、メッセージが際立つ" },
+    { "outfit": "ナチュラル系ワントーン", "score": 8.6, "note": "ライフスタイル・美容系に相性が良い" }
+  ],
+  "winning_emotions": [
+    { "emotion": "共感", "score": 9.5, "trigger": "あるある体験、失敗談", "note": "コメント率・保存率ともに最高水準" },
+    { "emotion": "驚き", "score": 9.2, "trigger": "予想外の事実、ギャップ演出", "note": "シェア率を高める最強感情" },
+    { "emotion": "希望・憧れ", "score": 8.9, "trigger": "成功例の提示、理想の未来像", "note": "フォロー転換率が高い" },
+    { "emotion": "焦り・FOMO", "score": 8.7, "trigger": "「知らないと損」「今だけ」フレーム", "note": "行動促進に効果的。過剰使用は信頼低下の恐れ" }
+  ],
+  "strong_words": [
+    { "word": "正直", "category": "authenticity", "score": 9.3 },
+    { "word": "実は", "category": "curiosity", "score": 9.1 },
+    { "word": "秘密", "category": "exclusivity", "score": 9.0 },
+    { "word": "無料", "category": "value", "score": 8.9 },
+    { "word": "5分で", "category": "time_saving", "score": 8.8 },
+    { "word": "プロが教える", "category": "authority", "score": 8.7 },
+    { "word": "やばい", "category": "excitement", "score": 8.5 },
+    { "word": "知らないと損", "category": "fomo", "score": 8.4 },
+    { "word": "簡単すぎる", "category": "ease", "score": 8.3 },
+    { "word": "保存確定", "category": "cta", "score": 8.2 }
+  ],
+  "weak_patterns": [
+    { "pattern": "長すぎる前置き（5秒超）", "reason": "視聴離脱率が急増する", "avoid_score": 9.5 },
+    { "pattern": "字幕なし", "reason": "音なし視聴ユーザーを取りこぼす", "avoid_score": 9.2 },
+    { "pattern": "情報詰め込みすぎ（1本に5トピック以上）", "reason": "主軸が不明瞭になり保存・シェアされにくい", "avoid_score": 9.0 },
+    { "pattern": "オチなし終わり方", "reason": "視聴完了率が下がりアルゴリズム評価が低下", "avoid_score": 8.8 },
+    { "pattern": "CTAの複数重ね（フォロー・保存・コメント全部求める）", "reason": "ユーザーが迷い結果ゼロになりやすい", "avoid_score": 8.5 }
+  ],
+  "visual_patterns": [
+    { "pattern": "テキストオーバーレイ（冒頭3秒）", "score": 9.4, "note": "フックと連動したテキストで離脱防止" },
+    { "pattern": "カット割り早め（1〜2秒/カット）", "score": 9.2, "note": "テンポ感がエンゲージメントを上げる" },
+    { "pattern": "ビフォーアフター縦分割", "score": 9.0, "note": "変化の視覚的インパクトが最大化" },
+    { "pattern": "テロップ＋音声の完全一致", "score": 8.9, "note": "情報の二重強調で記憶定着率アップ" },
+    { "pattern": "顔出し＋目線カメラ", "score": 8.8, "note": "信頼感とエンゲージメント率が高い" }
+  ],
+  "script_patterns": [
+    {
+      "pattern": "問題提起→共感→解決策→CTA",
+      "score": 9.5,
+      "template": "「〇〇で悩んでない？→わかる、私も同じだった→でも実はこうすれば解決→保存して試して」",
+      "note": "最も汎用性が高い4ステップ構成"
+    },
+    {
+      "pattern": "数字で始める",
+      "score": 9.2,
+      "template": "「3つの習慣で〇〇が変わった」「1週間で〇〇した方法」",
+      "note": "具体数字が信頼感と期待値を同時に上げる"
+    },
+    {
+      "pattern": "NG例→OK例の対比",
+      "score": 9.0,
+      "template": "「これはNG。こっちが正解」",
+      "note": "対比構造は情報の定着率が高く保存されやすい"
+    },
+    {
+      "pattern": "ストーリー導入型",
+      "score": 8.8,
+      "template": "「去年の私は〇〇で最悪だった。でも今は〇〇。その理由は1つだけ」",
+      "note": "感情移入を促し視聴完了率を高める"
+    }
+  ],
+  "top_posts": [
+    {
+      "id": "sample_001",
+      "theme": "朝ルーティン",
+      "hook": "「これを毎朝するだけで仕事の質が変わった」",
+      "views": 850000,
+      "likes": 42000,
+      "saves": 31000,
+      "score": 9.6,
+      "analyzed_at": "2026-06-01",
+      "key_factors": ["顔出し", "テロップ完備", "CTAが保存に絞られている", "30秒以内"]
+    },
+    {
+      "id": "sample_002",
+      "theme": "コスパ最強アイテム",
+      "hook": "「1000円以下で買える神グッズ3選」",
+      "views": 720000,
+      "likes": 38000,
+      "saves": 45000,
+      "score": 9.4,
+      "analyzed_at": "2026-06-02",
+      "key_factors": ["数字フック", "保存型コンテンツ", "商品を実際に使って見せている"]
+    },
+    {
+      "id": "sample_003",
+      "theme": "失敗→学び",
+      "hook": "「正直に言う。〇〇は完全に間違いだった」",
+      "views": 610000,
+      "likes": 29000,
+      "saves": 27000,
+      "score": 9.1,
+      "analyzed_at": "2026-06-03",
+      "key_factors": ["告白系フック", "共感感情", "明確な学び提示"]
+    }
+  ],
+  "emotional_patterns": [
+    {
+      "emotion": "孤独感",
+      "score": 9.7,
+      "sample_text": "深夜ひとりで泣いてるの、私だけじゃないよね。",
+      "last_seen": "2026-06-03",
+      "image_prompt": "暗い部屋、スマホの光だけで照らされた顔、布団の中、涙の跡",
+      "script_note": "「誰かいる？」系フックと組み合わせると保存率・コメント率が跳ね上がる"
+    },
+    {
+      "emotion": "依存感",
+      "score": 9.5,
+      "sample_text": "会いたいって思う気持ち、止められなくて。",
+      "last_seen": "2026-06-02",
+      "image_prompt": "スマホを抱きしめている手元、既読スルーの画面、夜の窓",
+      "script_note": "返信待ちシーンや通知画面の映像と組み合わせると共感爆増"
+    },
+    {
+      "emotion": "自己否定",
+      "score": 9.3,
+      "sample_text": "また自分を責めてる。なんでいつもこうなんだろ。",
+      "last_seen": "2026-06-01",
+      "image_prompt": "鏡を見る女性、うつむき加減、白い洗面台、朝の光",
+      "script_note": "ビフォーアフター構成と組み合わせ「変われた」導線に繋げると保存率が高い"
+    },
+    {
+      "emotion": "承認欲求",
+      "score": 9.2,
+      "sample_text": "ただ「よくやってるね」って言ってほしかっただけなのに。",
+      "last_seen": "2026-05-30",
+      "image_prompt": "誰もいないオフィス、スマホを見つめる表情、夕方の窓際",
+      "script_note": "職場・家族シーンに強い。共感コメントが集まりやすい"
+    },
+    {
+      "emotion": "職場ストレス",
+      "score": 9.0,
+      "sample_text": "また月曜か…もう限界かもしれない。",
+      "last_seen": "2026-06-04",
+      "image_prompt": "満員電車、うつむく人、深夜のPCと空のカップ麺、蛍光灯の白い光",
+      "script_note": "月曜・日曜夜の投稿タイミングで再生数が1.5〜2倍になる傾向"
+    },
+    {
+      "emotion": "寂しさ",
+      "score": 9.1,
+      "sample_text": "話したいのに、連絡できる人が思い浮かばない。",
+      "last_seen": "2026-06-03",
+      "image_prompt": "夜のコンビニ前、ひとりのシルエット、雨の窓ガラス、カーテン越しの街灯",
+      "script_note": "深夜帯投稿と相性が良い。「同じ人いる？」フックと組み合わせ最強"
+    },
+    {
+      "emotion": "甘えたい",
+      "score": 8.9,
+      "sample_text": "今日だけでいいから、ぎゅってしてほしい。",
+      "last_seen": "2026-06-02",
+      "image_prompt": "助手席、膝を抱える女性、夜のドライブ、ぼやけたヘッドライト",
+      "script_note": "恋愛系コンテンツのラストカットに使うとフォロー転換率が上がる"
+    },
+    {
+      "emotion": "眠れない",
+      "score": 8.8,
+      "sample_text": "また3時。眠れなくてスマホ見てる人、私だけじゃないよね。",
+      "last_seen": "2026-06-04",
+      "image_prompt": "暗い天井を見上げる視点、スマホの光、乱れた布団、時計の表示",
+      "script_note": "深夜0〜4時投稿で驚異的なエンゲージメント。「いる？🥺」フック確定"
+    }
+  ],
+  "location_patterns": [
+    {
+      "location": "洗面台",
+      "score": 9.4,
+      "sample_text": "朝の洗面台で、自分の顔を見るのがつらくなった日があった。",
+      "last_seen": "2026-06-03",
+      "image_prompt": "白い洗面台、鏡に映る顔、蛍光灯、朝の静けさ、水滴",
+      "visual_note": "自己否定・承認欲求感情との相性が最高。朝ルーティン系にも使える"
+    },
+    {
+      "location": "鏡越し",
+      "score": 9.3,
+      "sample_text": "鏡の中の自分に「お疲れ」って言いたくなる夜がある。",
+      "last_seen": "2026-06-04",
+      "image_prompt": "洗面鏡またはクローゼット鏡、少し暗い照明、スマホを持つ手が映り込む",
+      "visual_note": "自撮り感が出て視聴者が自分を重ねやすい。顔出し不要でも成立する"
+    },
+    {
+      "location": "ベッド",
+      "score": 9.5,
+      "sample_text": "ベッドに入っても眠れなくて、天井ばかり見てる。",
+      "last_seen": "2026-06-04",
+      "image_prompt": "白またはグレーの布団、暗い部屋、スマホの光のみ、乱れた枕",
+      "visual_note": "深夜感情系の最強ロケーション。眠れない・孤独感・甘えたいと全方位相性良"
+    },
+    {
+      "location": "助手席",
+      "score": 9.1,
+      "sample_text": "助手席って、なんか泣きやすい場所だと思う。",
+      "last_seen": "2026-06-01",
+      "image_prompt": "夜の助手席、流れる街灯、窓に顔を寄せた横顔、シートベルト",
+      "visual_note": "映画的な切なさが出る。恋愛・依存感・甘えたい感情と相性◎"
+    },
+    {
+      "location": "コンビニ",
+      "score": 8.9,
+      "sample_text": "深夜のコンビニって、なんか落ち着くんだよな。",
+      "last_seen": "2026-06-02",
+      "image_prompt": "コンビニの蛍光灯、夜の駐車場、ひとりで立つシルエット、スモークガラス越し",
+      "visual_note": "「都会のひとりぼっち感」が出る。寂しさ・孤独感コンテンツで保存率急増"
+    },
+    {
+      "location": "深夜チェーン店",
+      "score": 8.8,
+      "sample_text": "深夜のファミレスでひとり、なんか泣けてきた。",
+      "last_seen": "2026-05-31",
+      "image_prompt": "ファミレスのボックス席、冷めたコーヒー、窓の外の暗闇、スマホを見る手",
+      "visual_note": "孤独感・職場ストレス・眠れない感情を可視化するのに最適なロケーション"
+    }
+  ],
+  "hook_patterns": [
+    {
+      "hook": "「え、これ知らなかったの？」",
+      "score": 9.5,
+      "type": "curiosity",
+      "sample_text": "え、これ知らなかったの？知ってたら人生変わってたかも。",
+      "last_seen": "2026-06-04",
+      "note": "冒頭0〜2秒で視聴者を揺さぶる最強フック"
+    },
+    {
+      "hook": "「〇〇してる人、絶対見て」",
+      "score": 9.3,
+      "type": "targeting",
+      "sample_text": "毎日しんどいと感じてる人、絶対見て。",
+      "last_seen": "2026-06-03",
+      "note": "ターゲットを明示することで離脱を防ぎコメントを呼ぶ"
+    },
+    {
+      "hook": "「正直に言う。〇〇は間違いだった」",
+      "score": 9.1,
+      "type": "confession",
+      "sample_text": "正直に言う。ずっと我慢してたのは間違いだった。",
+      "last_seen": "2026-06-02",
+      "note": "告白系フックは信頼感と意外性を同時に与える"
+    },
+    {
+      "hook": "「〇〇秒で人生変わった話」",
+      "score": 8.9,
+      "type": "time_urgency",
+      "sample_text": "30秒で気持ちが楽になった話、聞いてく？",
+      "last_seen": "2026-06-01",
+      "note": "短時間＋大きな変化で再生維持率アップ"
+    },
+    {
+      "hook": "「これ見て損した人いない」",
+      "score": 8.7,
+      "type": "value_guarantee",
+      "sample_text": "これ見て損した人、まじでいないと思う。",
+      "last_seen": "2026-05-30",
+      "note": "視聴コストゼロを保証するフレーム"
+    },
+    {
+      "hook": "「〇〇な人だけスクロール止めて」",
+      "score": 9.2,
+      "type": "scroll_stop",
+      "sample_text": "最近ずっと疲れてる人だけスクロール止めて。",
+      "last_seen": "2026-06-04",
+      "note": "スクロールを物理的に止める行動誘導フレーム。感情系コンテンツと相性◎"
+    },
+    {
+      "hook": "「〇〇って思ってるの私だけ？」",
+      "score": 9.0,
+      "type": "solidarity",
+      "sample_text": "頑張ってるのに誰にも気づいてもらえないって思ってるの私だけ？",
+      "last_seen": "2026-06-03",
+      "note": "共感・孤独感を引き出す連帯系フック。コメント誘発力が高い"
+    }
+  ],
+  "question_patterns": [
+    {
+      "question": "いる？🥺",
+      "score": 9.8,
+      "sample_text": "深夜眠れなくて泣いてる人、いる？🥺",
+      "last_seen": "2026-06-04",
+      "note": "シンプルさと絵文字の組み合わせが最強。コメント率が異常に高い",
+      "best_emotion_pair": ["孤独感", "眠れない", "寂しさ"]
+    },
+    {
+      "question": "だめ？🥺",
+      "score": 9.6,
+      "sample_text": "今日だけ弱くても、だめ？🥺",
+      "last_seen": "2026-06-03",
+      "note": "許可を求める構文が甘え・依存感情を解放する。保存率も高い",
+      "best_emotion_pair": ["甘えたい", "自己否定", "承認欲求"]
+    },
+    {
+      "question": "聞いてくれる？",
+      "score": 9.4,
+      "sample_text": "誰にも言えないこと、聞いてくれる？",
+      "last_seen": "2026-06-02",
+      "note": "秘密の共有を促す構文。DM・コメントへの誘導に特に効果的",
+      "best_emotion_pair": ["孤独感", "依存感", "寂しさ"]
+    },
+    {
+      "question": "離れない？",
+      "score": 9.3,
+      "sample_text": "ずっとそばにいてほしいって思うこと、ある？離れない？",
+      "last_seen": "2026-06-01",
+      "note": "視聴者との疑似的な絆を作る。フォロー転換率が高い",
+      "best_emotion_pair": ["依存感", "甘えたい", "寂しさ"]
+    },
+    {
+      "question": "同じ人いる？",
+      "score": 9.5,
+      "sample_text": "頑張ってるのに空回りしてる気がする。同じ人いる？",
+      "last_seen": "2026-06-04",
+      "note": "連帯感を生む最強の締め質問。コメント欄が共感で埋まる",
+      "best_emotion_pair": ["孤独感", "承認欲求", "職場ストレス"]
+    }
+  ],
+  "ai_emotion_db": {
+    "_meta": {
+      "purpose": "生成AIが画像・台本・キャプションを生成する際に感情軸を決定するためのDB。emotion_idを指定するだけで対応するai_image_prompt・script_template・caption_templateが使える。",
+      "usage": "1. score順に上位の感情を選択 2. ai_image_promptを画像生成AIに渡す 3. script_templateで台本を構成 4. caption_templateでキャプション生成"
+    },
+    "entries": [
+      {
+        "emotion_id": "loneliness",
+        "label": "孤独感",
+        "score": 9.7,
+        "last_seen": "2026-06-04",
+        "intensity": "high",
+        "ai_image_prompt": "A young Japanese woman alone in a dark room, only the glow of a smartphone illuminating her face, lying in a messy bed, tear stains on cheeks, late night atmosphere, cinematic, soft blue light, 9:16 vertical",
+        "ai_image_prompt_ja": "暗い部屋でひとりの若い日本人女性、スマホの光だけで照らされた顔、乱れたベッドの上、涙の跡、深夜の雰囲気、シネマティック、柔らかい青い光、縦9:16",
+        "script_template": "【フック】{question_pattern}（例：深夜眠れなくて泣いてる人、いる？🥺）\n【共感】誰かに言えなくて、ひとりで抱えてること、ない？\n【展開】{solution_or_validation}\n【締め】同じ人いる？コメントで教えて。",
+        "caption_template": "深夜ひとりで泣いてる人へ。\nあなたがおかしいわけじゃない。\n{core_message}\n#孤独 #眠れない #深夜 #共感",
+        "best_hook_ids": ["いる？🥺", "同じ人いる？", "〇〇な人だけスクロール止めて"],
+        "best_location_ids": ["ベッド", "深夜チェーン店", "コンビニ"]
+      },
+      {
+        "emotion_id": "dependency",
+        "label": "依存感",
+        "score": 9.5,
+        "last_seen": "2026-06-03",
+        "intensity": "high",
+        "ai_image_prompt": "Close-up of hands clutching a smartphone, chat app open with 'read' but no reply, blurred city lights outside window at night, warm but lonely atmosphere, shallow depth of field, 9:16 vertical",
+        "ai_image_prompt_ja": "スマホを握りしめる手のクローズアップ、既読スルーのチャット画面、夜の窓の外にぼやけた街灯り、温かくて寂しい雰囲気、浅い被写界深度、縦9:16",
+        "script_template": "【フック】返信、来ないよね。\n【共感】待ってるのに既読スルー、なんか息ができなくなる感じしない？\n【展開】{solution_or_validation}\n【締め】離れない？",
+        "caption_template": "待つのが得意になっていく自分が怖い。\n{core_message}\n#依存 #既読無視 #恋愛 #深夜",
+        "best_hook_ids": ["離れない？", "だめ？🥺", "聞いてくれる？"],
+        "best_location_ids": ["助手席", "ベッド", "鏡越し"]
+      },
+      {
+        "emotion_id": "self_denial",
+        "label": "自己否定",
+        "score": 9.3,
+        "last_seen": "2026-06-04",
+        "intensity": "high",
+        "ai_image_prompt": "Japanese woman looking at herself in a bathroom mirror with a tired, dejected expression, white vanity lighting, morning light through frosted glass, minimalist bathroom, realistic, 9:16 vertical",
+        "ai_image_prompt_ja": "洗面台の鏡を見る疲れた表情の日本人女性、白い洗面照明、すりガラス越しの朝の光、シンプルなバスルーム、リアル、縦9:16",
+        "script_template": "【フック】また自分を責めてる。\n【共感】頑張ってるのに、なんでこんなにできないんだろって思う夜、ない？\n【展開】{solution_or_validation}\n【締め】だめ？🥺 今日だけ、ゆるしてあげて。",
+        "caption_template": "自分を責めてばかりの人へ。\n頑張ってるよ、ちゃんと。\n{core_message}\n#自己否定 #自己肯定感 #共感 #メンタル",
+        "best_hook_ids": ["だめ？🥺", "〇〇してる人、絶対見て", "〇〇って思ってるの私だけ？"],
+        "best_location_ids": ["洗面台", "鏡越し", "ベッド"]
+      },
+      {
+        "emotion_id": "validation_seeking",
+        "label": "承認欲求",
+        "score": 9.2,
+        "last_seen": "2026-06-02",
+        "intensity": "medium-high",
+        "ai_image_prompt": "Young Japanese woman sitting alone by an office window at dusk, looking at phone with a quiet sad expression, empty desks around her, warm golden hour light, soft focus, 9:16 vertical",
+        "ai_image_prompt_ja": "夕暮れ時のオフィスの窓際にひとりで座る若い日本人女性、静かな悲しい表情でスマホを見る、周りには誰もいない、夕方のゴールデンアワーの光、ソフトフォーカス、縦9:16",
+        "script_template": "【フック】「よくやってるね」って、誰かに言ってほしかった。\n【共感】頑張ってるのに、誰にも気づかれない。そういう日、ない？\n【展開】{solution_or_validation}\n【締め】同じ人いる？",
+        "caption_template": "気づいてほしかっただけだった。\n{core_message}\n#承認欲求 #頑張ってる #職場 #共感",
+        "best_hook_ids": ["同じ人いる？", "〇〇って思ってるの私だけ？", "〇〇してる人、絶対見て"],
+        "best_location_ids": ["深夜チェーン店", "コンビニ", "鏡越し"]
+      },
+      {
+        "emotion_id": "work_stress",
+        "label": "職場ストレス",
+        "score": 9.0,
+        "last_seen": "2026-06-04",
+        "intensity": "medium-high",
+        "ai_image_prompt": "Japanese woman slumped over a desk late at night, surrounded by papers and an empty cup noodle, harsh fluorescent lighting, tired expression, exhausted body language, realistic, 9:16 vertical",
+        "ai_image_prompt_ja": "深夜のデスクに突っ伏す日本人女性、書類と空のカップ麺に囲まれ、蛍光灯の冷たい光、疲れた表情、疲弊したボディランゲージ、リアル、縦9:16",
+        "script_template": "【フック】また月曜か…もう限界かも。\n【共感】休みの日の夜、明日のことが頭から離れなくなる人、いない？\n【展開】{solution_or_validation}\n【締め】同じ人いる？コメントで教えて。",
+        "caption_template": "限界まで頑張ってる人へ。\n休んでいい。\n{core_message}\n#職場ストレス #仕事 #限界 #共感",
+        "best_hook_ids": ["〇〇な人だけスクロール止めて", "いる？🥺", "正直に言う。〇〇は間違いだった"],
+        "best_location_ids": ["深夜チェーン店", "コンビニ", "鏡越し"]
+      },
+      {
+        "emotion_id": "longing",
+        "label": "寂しさ",
+        "score": 9.1,
+        "last_seen": "2026-06-03",
+        "intensity": "high",
+        "ai_image_prompt": "Silhouette of a young woman standing alone outside a convenience store at night, rain on the window, soft neon reflections on wet pavement, melancholic mood, cinematic, 9:16 vertical",
+        "ai_image_prompt_ja": "深夜のコンビニ前にひとり立つ若い女性のシルエット、雨の窓、濡れたアスファルトに映えるネオンの反射、メランコリックな雰囲気、シネマティック、縦9:16",
+        "script_template": "【フック】連絡したいのに、送れる人が思い浮かばない夜。\n【共感】賑やかにしてるのに、なんか孤独ってこと、ない？\n【展開】{solution_or_validation}\n【締め】いる？🥺",
+        "caption_template": "ひとりが好きなのに、寂しい。\nそういうの、ある。\n{core_message}\n#寂しい #孤独 #深夜 #共感",
+        "best_hook_ids": ["いる？🥺", "聞いてくれる？", "〇〇って思ってるの私だけ？"],
+        "best_location_ids": ["コンビニ", "深夜チェーン店", "ベッド"]
+      },
+      {
+        "emotion_id": "wanting_comfort",
+        "label": "甘えたい",
+        "score": 8.9,
+        "last_seen": "2026-06-02",
+        "intensity": "medium",
+        "ai_image_prompt": "Young Japanese woman in passenger seat at night, head resting on window, city lights blurring past, soft warm light, vulnerable and tender mood, cinematic portrait, 9:16 vertical",
+        "ai_image_prompt_ja": "夜の助手席の若い日本人女性、窓に頭を預けて、流れる街の光、柔らかい温かい光、繊細でやわらかい雰囲気、シネマティックポートレート、縦9:16",
+        "script_template": "【フック】今日だけでいいから、ぎゅってしてほしい。\n【共感】強くいなきゃって思ってるのに、たまに全部投げ出したくなること、ない？\n【展開】{solution_or_validation}\n【締め】だめ？🥺",
+        "caption_template": "甘えたくて、でも言えなくて。\nそういうの、ぜんぜんだめじゃないよ。\n{core_message}\n#甘えたい #恋愛 #弱さ #共感",
+        "best_hook_ids": ["だめ？🥺", "離れない？", "聞いてくれる？"],
+        "best_location_ids": ["助手席", "ベッド", "鏡越し"]
+      },
+      {
+        "emotion_id": "insomnia",
+        "label": "眠れない",
+        "score": 9.6,
+        "last_seen": "2026-06-04",
+        "intensity": "high",
+        "ai_image_prompt": "POV shot looking up at a dark ceiling from bed, soft glow of a phone screen illuminating the scene, clock showing 3am, rumpled white sheets, quiet and restless mood, 9:16 vertical",
+        "ai_image_prompt_ja": "ベッドから天井を見上げる一人称視点、スマホの光が柔らかく照らす、時計は3時を示す、乱れた白いシーツ、静かで落ち着かない雰囲気、縦9:16",
+        "script_template": "【フック】また3時。眠れなくてスマホ見てる人、いる？🥺\n【共感】横になってるのに頭が止まらない夜、ない？\n【展開】{solution_or_validation}\n【締め】同じ人いる？",
+        "caption_template": "深夜3時にこれ見てる人へ。\nおやすみ、って言いたかった。\n{core_message}\n#眠れない #深夜 #不眠 #共感",
+        "best_hook_ids": ["いる？🥺", "同じ人いる？", "〇〇な人だけスクロール止めて"],
+        "best_location_ids": ["ベッド", "コンビニ", "深夜チェーン店"]
+      }
+    ]
+  },
+  "ai_composition_db": {
+    "_meta": {
+      "purpose": "生成AIへの画像構図指示に特化したDB。camera_angle・lighting・mood・aspect_ratioをセットで渡すだけで一貫したビジュアルが生成できる。",
+      "usage": "composition_idを選択 → full_promptをDALL-E/Midjourney/Stable Diffusionに渡す → negative_promptで除外指定"
+    },
+    "entries": [
+      {
+        "composition_id": "mirror_selfie",
+        "label": "鏡越し自撮り",
+        "score": 9.6,
+        "last_seen": "2026-06-04",
+        "camera_angle": "eye-level, slight downward tilt",
+        "lighting": "bathroom vanity light, soft warm white, slight shadows under eyes",
+        "mood": "tired, introspective, vulnerable",
+        "aspect_ratio": "9:16",
+        "full_prompt": "Japanese woman taking mirror selfie in dimly lit bathroom, vanity light casting soft shadows, tired but honest expression, phone visible in reflection, minimalist white bathroom, cinematic realism, 9:16 vertical",
+        "negative_prompt": "bright smile, heavy makeup, studio lighting, artificial background",
+        "sample_text": "鏡の自分に「お疲れ」って言いたくなる夜がある。",
+        "best_emotion_ids": ["self_denial", "validation_seeking", "loneliness"]
+      },
+      {
+        "composition_id": "bed_ceiling_pov",
+        "label": "ベッドから天井POV",
+        "score": 9.5,
+        "last_seen": "2026-06-04",
+        "camera_angle": "first-person POV looking up at ceiling",
+        "lighting": "smartphone glow only, very dark room, soft blue-white light",
+        "mood": "restless, sleepless, contemplative",
+        "aspect_ratio": "9:16",
+        "full_prompt": "First person POV from bed looking up at dark ceiling, only light source is smartphone screen glowing softly, white sheets slightly rumpled, 3am atmosphere, hyper-realistic, cinematic, 9:16 vertical",
+        "negative_prompt": "daylight, bright room, people visible, happy expression",
+        "sample_text": "また天井見てる。",
+        "best_emotion_ids": ["insomnia", "loneliness", "longing"]
+      },
+      {
+        "composition_id": "passenger_seat_night",
+        "label": "夜の助手席",
+        "score": 9.4,
+        "last_seen": "2026-06-03",
+        "camera_angle": "side profile, driver's perspective or dashboard camera angle",
+        "lighting": "city lights bokeh through window, warm ambient glow, dashboard light",
+        "mood": "melancholic, tender, wanting comfort",
+        "aspect_ratio": "9:16",
+        "full_prompt": "Young Japanese woman in passenger seat at night, head resting lightly against window, city lights streaming past in bokeh, warm intimate lighting, slightly sad expression, cinematic portrait, 9:16 vertical",
+        "negative_prompt": "daytime, bright light, crowded, happy expression, tourist",
+        "sample_text": "助手席って、なんか泣きやすい場所だと思う。",
+        "best_emotion_ids": ["wanting_comfort", "dependency", "longing"]
+      },
+      {
+        "composition_id": "convenience_store_silhouette",
+        "label": "コンビニ前シルエット",
+        "score": 9.3,
+        "last_seen": "2026-06-04",
+        "camera_angle": "medium wide shot from inside looking out, or outside looking in",
+        "lighting": "harsh fluorescent from store, wet pavement reflections, dark night sky",
+        "mood": "isolated, urban lonely, quiet despair",
+        "aspect_ratio": "9:16",
+        "full_prompt": "Silhouette of a young woman standing alone in front of a Japanese convenience store at night, rain-soaked pavement reflecting neon signs, viewed through glass, melancholic atmosphere, cinematic street photography style, 9:16 vertical",
+        "negative_prompt": "daytime, crowds, smiling, warm sunny",
+        "sample_text": "深夜のコンビニって、なんか落ち着くんだよな。",
+        "best_emotion_ids": ["longing", "loneliness", "work_stress"]
+      },
+      {
+        "composition_id": "phone_screen_hands",
+        "label": "スマホ画面と手のクローズアップ",
+        "score": 9.2,
+        "last_seen": "2026-06-03",
+        "camera_angle": "close-up overhead or slight angle, hands in frame",
+        "lighting": "screen glow only, dark surroundings, blue-white light on hands",
+        "mood": "waiting, anxious, dependent",
+        "aspect_ratio": "9:16",
+        "full_prompt": "Close-up of female hands holding smartphone, chat conversation open showing 'read' with no reply, dark background, only the screen illuminates the scene, nail polish subtle, restless tense grip, hyper-realistic, 9:16 vertical",
+        "negative_prompt": "happy conversation, bright room, replied messages, smile",
+        "sample_text": "返信、来ないよね。",
+        "best_emotion_ids": ["dependency", "loneliness", "longing"]
+      },
+      {
+        "composition_id": "vanity_mirror_morning",
+        "label": "洗面台の朝",
+        "score": 9.1,
+        "last_seen": "2026-06-02",
+        "camera_angle": "straight-on mirror reflection, subject slightly off-center",
+        "lighting": "cool white vanity light, morning light from small window, slight under-eye shadows",
+        "mood": "exhausted, self-critical, quiet resolve",
+        "aspect_ratio": "9:16",
+        "full_prompt": "Japanese woman looking at her reflection in bathroom mirror early morning, cool vanity lighting, faint dark circles, bare face no makeup, white bathroom tiles, expression between tired and determined, realistic portrait, 9:16 vertical",
+        "negative_prompt": "heavy makeup, bright smile, studio background, filters",
+        "sample_text": "朝の洗面台で、自分の顔を見るのがつらくなった日があった。",
+        "best_emotion_ids": ["self_denial", "work_stress", "validation_seeking"]
+      },
+      {
+        "composition_id": "diner_alone_night",
+        "label": "深夜ファミレスひとり",
+        "score": 9.0,
+        "last_seen": "2026-06-01",
+        "camera_angle": "booth seat across table, or from behind subject looking out window",
+        "lighting": "harsh overhead fluorescent, cold white light, dark window reflection",
+        "mood": "isolated, contemplative, late-night sadness",
+        "aspect_ratio": "9:16",
+        "full_prompt": "Young Japanese woman sitting alone in a booth at a late-night family restaurant, cold fluorescent lighting, cold coffee or tea on table, phone face down, staring out dark window, back view or soft profile, cinematic, 9:16 vertical",
+        "negative_prompt": "daytime, friends, laughing, warm light, food focused",
+        "sample_text": "深夜のファミレスでひとり、なんか泣けてきた。",
+        "best_emotion_ids": ["loneliness", "work_stress", "longing"]
+      },
+      {
+        "composition_id": "window_rain_close",
+        "label": "雨の窓ガラスクローズアップ",
+        "score": 8.9,
+        "last_seen": "2026-06-02",
+        "camera_angle": "extreme close-up of rain on glass, subject blurred behind or reflected",
+        "lighting": "grey overcast natural light, street lights through rain, desaturated palette",
+        "mood": "wistful, nostalgic, quiet sadness",
+        "aspect_ratio": "9:16",
+        "full_prompt": "Extreme close-up of raindrops on window glass, blurred silhouette of a person behind the glass, grey moody light, soft bokeh of street lights, melancholic atmosphere, fine art photography style, 9:16 vertical",
+        "negative_prompt": "sunny, bright colors, sharp background, crowds",
+        "sample_text": "雨の日って、なんか昔のこと思い出す。",
+        "best_emotion_ids": ["longing", "loneliness", "self_denial"]
+      }
+    ]
+  },
+  "ai_question_db": {
+    "_meta": {
+      "purpose": "視聴者の感情を解放しコメント・保存・フォローを引き出す問いかけフレーズDB。GPTが台本・キャプションの締めに直接使える。",
+      "usage": "emotion_idと一致するbest_emotion_idsを持つエントリを選択 → question_textを台本・キャプションの末尾に配置"
+    },
+    "entries": [
+      {
+        "question_id": "q_iru",
+        "question_text": "いる？🥺",
+        "score": 9.8,
+        "last_seen": "2026-06-04",
+        "type": "solidarity",
+        "placement": "ending",
+        "sample_text": "深夜眠れなくて泣いてる人、いる？🥺",
+        "effect": "コメント率が最高水準。視聴者に「自分のことだ」と思わせる最短フレーズ",
+        "best_emotion_ids": ["loneliness", "insomnia", "longing"],
+        "pair_with_location": ["ベッド", "コンビニ", "深夜チェーン店"]
+      },
+      {
+        "question_id": "q_dame",
+        "question_text": "だめ？🥺",
+        "score": 9.6,
+        "last_seen": "2026-06-03",
+        "type": "permission_seeking",
+        "placement": "ending",
+        "sample_text": "今日だけ弱くても、だめ？🥺",
+        "effect": "許可を求める構文が感情の解放を促す。保存率・シェア率ともに高い",
+        "best_emotion_ids": ["wanting_comfort", "self_denial", "validation_seeking"],
+        "pair_with_location": ["ベッド", "鏡越し", "助手席"]
+      },
+      {
+        "question_id": "q_onaji",
+        "question_text": "同じ人いる？",
+        "score": 9.5,
+        "last_seen": "2026-06-04",
+        "type": "solidarity",
+        "placement": "ending",
+        "sample_text": "頑張ってるのに空回りしてる気がする。同じ人いる？",
+        "effect": "コメント欄が共感で埋まる。連帯感を生む最強の締め問いかけ",
+        "best_emotion_ids": ["validation_seeking", "loneliness", "work_stress"],
+        "pair_with_location": ["深夜チェーン店", "コンビニ", "鏡越し"]
+      },
+      {
+        "question_id": "q_kiite",
+        "question_text": "聞いてくれる？",
+        "score": 9.4,
+        "last_seen": "2026-06-02",
+        "type": "invitation",
+        "placement": "hook_or_ending",
+        "sample_text": "誰にも言えないこと、聞いてくれる？",
+        "effect": "秘密の共有フレーム。DM誘導・コメント誘導に特に効果的",
+        "best_emotion_ids": ["loneliness", "dependency", "longing"],
+        "pair_with_location": ["ベッド", "助手席", "コンビニ"]
+      },
+      {
+        "question_id": "q_hanarenai",
+        "question_text": "離れない？",
+        "score": 9.3,
+        "last_seen": "2026-06-01",
+        "type": "attachment",
+        "placement": "ending",
+        "sample_text": "ずっとそばにいてほしいって思うこと、ある？離れない？",
+        "effect": "視聴者との疑似的な絆を生成。フォロー転換率が特に高い",
+        "best_emotion_ids": ["dependency", "wanting_comfort", "longing"],
+        "pair_with_location": ["助手席", "ベッド", "鏡越し"]
+      },
+      {
+        "question_id": "q_tsutaetai",
+        "question_text": "伝えたいことがある。",
+        "score": 9.1,
+        "last_seen": "2026-06-03",
+        "type": "declaration",
+        "placement": "hook",
+        "sample_text": "ずっと言えなかったけど、伝えたいことがある。",
+        "effect": "フック配置で使うと視聴完了率が高い。告白系コンテンツの冒頭に最適",
+        "best_emotion_ids": ["dependency", "wanting_comfort", "self_denial"],
+        "pair_with_location": ["鏡越し", "助手席", "洗面台"]
+      },
+      {
+        "question_id": "q_miteiru",
+        "question_text": "見てる？",
+        "score": 9.0,
+        "last_seen": "2026-06-04",
+        "type": "direct_address",
+        "placement": "hook_or_ending",
+        "sample_text": "深夜3時にこれ見てる人、見てる？",
+        "effect": "視聴者を直接指名する構文。孤独感を抱えた深夜視聴者に強烈に刺さる",
+        "best_emotion_ids": ["insomnia", "loneliness", "longing"],
+        "pair_with_location": ["ベッド", "コンビニ", "深夜チェーン店"]
+      },
+      {
+        "question_id": "q_wakattemoraerun",
+        "question_text": "わかってもらえる？",
+        "score": 8.9,
+        "last_seen": "2026-06-02",
+        "type": "validation_request",
+        "placement": "ending",
+        "sample_text": "うまく言えないんだけど、この感じ、わかってもらえる？",
+        "effect": "言語化できない感情の代弁。共感コメントが自然発生しやすい",
+        "best_emotion_ids": ["self_denial", "validation_seeking", "work_stress"],
+        "pair_with_location": ["鏡越し", "深夜チェーン店", "洗面台"]
+      },
+      {
+        "question_id": "q_daijoubu",
+        "question_text": "大丈夫？",
+        "score": 8.8,
+        "last_seen": "2026-06-03",
+        "type": "care",
+        "placement": "ending",
+        "sample_text": "無理してない？ちゃんと、大丈夫？",
+        "effect": "視聴者を心配する構文。フォロー転換率・保存率ともに高い。優しいトーンの締めに最適",
+        "best_emotion_ids": ["work_stress", "self_denial", "insomnia"],
+        "pair_with_location": ["洗面台", "深夜チェーン店", "ベッド"]
+      }
+    ]
+  },
+  "generation_rules": {
+    "hook_rule": "冒頭0〜2秒で好奇心・共感・ターゲティングのいずれかを発火させる。hook_patternsのscoreが高いものを優先し、strong_wordsを1〜2個組み込む。",
+    "script_rule": "script_patternsから1つ選び、emotional_patternsのscript_noteを参照して感情導線を設計する。情報は1本1トピックに絞る。",
+    "visual_rule": "location_patternsのimage_promptを画像生成AIに直接渡す。visual_patternsを2〜3個組み合わせる。字幕は必須。",
+    "ending_rule": "question_patternsのscoreが高いものでラストを締める。CTAはwinning_endingsから1つだけ追加。複数のCTAを重ねない。",
+    "emotion_pairing_rule": "emotional_patternsを起点に → hook_patterns（type一致優先）→ location_patterns（visual_note参照）→ question_patterns（best_emotion_pair一致）の順で組み合わせを選ぶ。",
+    "image_generation_rule": "location_patternsのimage_promptをそのままDALL-E / Midjourneyに渡す。emotional_patternsのimage_promptを補助プロンプトとして追加することで感情表現を強化する。",
+    "length_rule": "15〜45秒が最適。60秒を超える場合は分割を検討。",
+    "weight_rule": "last_seenが新しいデータほど参照優先度を高くする。viewsが50万超のtop_postsからのkey_factorsは必ずscript/visual生成に反映する。",
+    "ai_generation_flow": {
+      "step1_emotion": "ai_emotion_dbからscoreが高いemotion_idを選択。script_templateとcaption_templateをそのまま使用。",
+      "step2_composition": "ai_composition_dbからbest_emotion_idsに一致するcomposition_idを選択。full_promptを画像生成AIに渡す。negative_promptも必ず付与。",
+      "step3_question": "ai_question_dbからbest_emotion_idsに一致するquestion_idを選択。placementに従ってhookまたはendingに配置。",
+      "step4_assemble": "script_template + question_text + caption_templateを組み合わせて最終出力。core_messageには独自メッセージを1文挿入。",
+      "cross_reference_rule": "emotion_id → composition_id → question_idのIDチェーンで一貫した感情軸を維持する。異なる感情を混在させない。"
+    }
+  }
+}

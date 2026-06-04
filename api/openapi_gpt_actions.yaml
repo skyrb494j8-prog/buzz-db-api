@@ -1,0 +1,389 @@
+openapi: 3.1.0
+
+info:
+  title: Buzz Reel DB API
+  description: |
+    Instagram バズリール分析DBをGPT Actionsから利用するためのAPI。
+    感情・構図・問いかけ・生成ルールをJSONで返す。
+    台本生成・画像プロンプト生成・キャプション生成の起点として使う。
+  version: "1.0.0"
+
+servers:
+  - url: https://your-domain.com
+    description: 本番サーバー（デプロイ後にURLを変更してください）
+  - url: http://localhost:8000
+    description: ローカル開発サーバー
+
+paths:
+
+  /buzz/latest:
+    get:
+      operationId: getBuzzLatest
+      summary: 最新サマリー（GPT Actions メイン）
+      description: |
+        スコア最上位の感情・構図・問いかけと生成ルールをまとめて返す。
+        GPT Actionsのメインエンドポイント。台本・画像・キャプション生成の起点として使う。
+        emotion_idを指定すると、その感情に合った構図・問いかけに絞り込まれる。
+      tags:
+        - buzz
+      parameters:
+        - name: emotion_id
+          in: query
+          required: false
+          description: 絞り込む感情ID（例：loneliness, insomnia, dependency）
+          schema:
+            type: string
+            enum:
+              - loneliness
+              - dependency
+              - self_denial
+              - validation_seeking
+              - work_stress
+              - longing
+              - wanting_comfort
+              - insomnia
+      responses:
+        "200":
+          description: 最新サマリーを返す
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LatestResponse"
+        "503":
+          description: DBファイルが読み込めない
+
+  /buzz/emotions:
+    get:
+      operationId: getBuzzEmotions
+      summary: 感情DB一覧
+      description: |
+        ai_emotion_dbの全エントリをスコア降順で返す。
+        各エントリにai_image_prompt（英語・日本語）、script_template、caption_templateを含む。
+        画像生成AIへのプロンプトと台本テンプレートがそのまま使える。
+      tags:
+        - buzz
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          description: 返却件数（デフォルト10、最大50）
+          schema:
+            type: integer
+            default: 10
+            minimum: 1
+            maximum: 50
+        - name: min_score
+          in: query
+          required: false
+          description: スコアの下限フィルタ（0.0〜10.0）
+          schema:
+            type: number
+            default: 0.0
+            minimum: 0.0
+            maximum: 10.0
+      responses:
+        "200":
+          description: 感情DBエントリ一覧
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmotionsResponse"
+
+  /buzz/compositions:
+    get:
+      operationId: getBuzzCompositions
+      summary: 構図DB一覧
+      description: |
+        ai_composition_dbの全エントリをスコア降順で返す。
+        各エントリにfull_prompt（DALL-E/Midjourney直渡し用）とnegative_promptを含む。
+        emotion_idで感情に合った構図に絞り込むことができる。
+      tags:
+        - buzz
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 1
+            maximum: 50
+        - name: emotion_id
+          in: query
+          required: false
+          description: 感情IDで絞り込み（例：loneliness）
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 構図DBエントリ一覧
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CompositionsResponse"
+
+  /buzz/questions:
+    get:
+      operationId: getBuzzQuestions
+      summary: 問いかけDB一覧
+      description: |
+        ai_question_dbの全エントリをスコア降順で返す。
+        placement（hook / ending）と emotion_id で組み合わせを選べる。
+        台本・キャプションの末尾またはフック冒頭に直接配置できる。
+      tags:
+        - buzz
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 1
+            maximum: 50
+        - name: placement
+          in: query
+          required: false
+          description: 配置場所フィルタ（hook / ending / hook_or_ending）
+          schema:
+            type: string
+            enum:
+              - hook
+              - ending
+              - hook_or_ending
+        - name: emotion_id
+          in: query
+          required: false
+          description: 感情IDで絞り込み
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 問いかけDBエントリ一覧
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuestionsResponse"
+
+  /buzz/generation:
+    get:
+      operationId: getBuzzGeneration
+      summary: 生成ルール
+      description: |
+        generation_rulesを返す。
+        GPTが台本・画像・キャプションを生成する際の行動指針として使う。
+        ai_generation_flowには感情→構図→問いかけのIDチェーンが含まれる。
+      tags:
+        - buzz
+      responses:
+        "200":
+          description: 生成ルール
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenerationResponse"
+        "404":
+          description: generation_rulesが見つからない
+
+  /healthz:
+    get:
+      operationId: getHealth
+      summary: ヘルスチェック
+      description: サーバーとbuzz_db.jsonの疎通確認。
+      tags:
+        - system
+      responses:
+        "200":
+          description: サーバー正常
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthResponse"
+
+components:
+  schemas:
+
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: ok
+        db_path:
+          type: string
+          example: /app/buzz_db.json
+        db_updated_at:
+          type: string
+          nullable: true
+          example: "2026-06-04T21:00:00+09:00"
+
+    EmotionEntry:
+      type: object
+      properties:
+        emotion_id:
+          type: string
+          example: loneliness
+        label:
+          type: string
+          example: 孤独感
+        score:
+          type: number
+          example: 9.7
+        last_seen:
+          type: string
+          example: "2026-06-04"
+        intensity:
+          type: string
+          example: high
+        ai_image_prompt:
+          type: string
+          description: 英語の画像生成プロンプト（DALL-E/Midjourney直渡し用）
+        ai_image_prompt_ja:
+          type: string
+          description: 日本語の画像生成プロンプト
+        script_template:
+          type: string
+          description: 穴埋め式台本テンプレート
+        caption_template:
+          type: string
+          description: キャプションテンプレート
+        best_hook_ids:
+          type: array
+          items:
+            type: string
+        best_location_ids:
+          type: array
+          items:
+            type: string
+
+    CompositionEntry:
+      type: object
+      properties:
+        composition_id:
+          type: string
+          example: mirror_selfie
+        label:
+          type: string
+          example: 鏡越し自撮り
+        score:
+          type: number
+          example: 9.6
+        last_seen:
+          type: string
+          example: "2026-06-04"
+        camera_angle:
+          type: string
+        lighting:
+          type: string
+        mood:
+          type: string
+        aspect_ratio:
+          type: string
+          example: "9:16"
+        full_prompt:
+          type: string
+          description: 画像生成AIに直渡しできる完全プロンプト
+        negative_prompt:
+          type: string
+          description: 除外指定プロンプト
+        sample_text:
+          type: string
+        best_emotion_ids:
+          type: array
+          items:
+            type: string
+
+    QuestionEntry:
+      type: object
+      properties:
+        question_id:
+          type: string
+          example: q_iru
+        question_text:
+          type: string
+          example: "いる？🥺"
+        score:
+          type: number
+          example: 9.8
+        last_seen:
+          type: string
+          example: "2026-06-04"
+        type:
+          type: string
+          example: solidarity
+        placement:
+          type: string
+          example: ending
+        sample_text:
+          type: string
+        effect:
+          type: string
+        best_emotion_ids:
+          type: array
+          items:
+            type: string
+        pair_with_location:
+          type: array
+          items:
+            type: string
+
+    LatestResponse:
+      type: object
+      properties:
+        updated_at:
+          type: string
+          example: "2026-06-04T21:00:00+09:00"
+        top_emotion:
+          $ref: "#/components/schemas/EmotionEntry"
+        top_composition:
+          $ref: "#/components/schemas/CompositionEntry"
+        top_question:
+          $ref: "#/components/schemas/QuestionEntry"
+        generation_rules:
+          type: object
+          additionalProperties: true
+
+    EmotionsResponse:
+      type: object
+      properties:
+        updated_at:
+          type: string
+        count:
+          type: integer
+        entries:
+          type: array
+          items:
+            $ref: "#/components/schemas/EmotionEntry"
+
+    CompositionsResponse:
+      type: object
+      properties:
+        updated_at:
+          type: string
+        count:
+          type: integer
+        entries:
+          type: array
+          items:
+            $ref: "#/components/schemas/CompositionEntry"
+
+    QuestionsResponse:
+      type: object
+      properties:
+        updated_at:
+          type: string
+        count:
+          type: integer
+        entries:
+          type: array
+          items:
+            $ref: "#/components/schemas/QuestionEntry"
+
+    GenerationResponse:
+      type: object
+      properties:
+        updated_at:
+          type: string
+        generation_rules:
+          type: object
+          additionalProperties: true
